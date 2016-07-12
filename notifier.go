@@ -52,7 +52,7 @@ type Notifier struct {
 	// http.Client that is used to interact with Airbrake API.
 	Client *http.Client
 
-	projectId       int64
+	projectId       string
 	projectKey      string
 	createNoticeURL string
 
@@ -64,7 +64,7 @@ type Notifier struct {
 	closed   chan struct{}
 }
 
-func NewNotifier(projectId int64, projectKey string) *Notifier {
+func NewNotifier(projectId string, projectKey string) *Notifier {
 	n := &Notifier{
 		projectId:       projectId,
 		projectKey:      projectKey,
@@ -230,9 +230,9 @@ func (n *Notifier) WaitAndClose(timeout time.Duration) error {
 	return nil
 }
 
-func getCreateNoticeURL(host string, projectId int64, key string) string {
+func getCreateNoticeURL(host string, projectId string, key string) string {
 	return fmt.Sprintf(
-		"%s/api/v3/projects/%d/notices?key=%s",
+		"%s/api/v3/projects/%s/notices?key=%s",
 		host, projectId, key,
 	)
 }
